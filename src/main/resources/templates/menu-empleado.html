@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menú Empleado</title>
+    <style>
+        body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f1ea; margin:0; padding:2rem; padding-bottom:6rem; }
+        h1 { color:#b8541a; }
+        .lista { background:white; border-radius:10px; padding:1rem 0; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+        .item { padding:0.6rem 1.5rem; font-size:0.9rem; }
+        .grupo { font-weight:bold; color:#b8541a; margin-top:0.5rem; }
+        .opcion a { color:#333; text-decoration:none; }
+        .opcion a:hover { color:#b8541a; }
+        .fab {
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 54px; height: 54px; border-radius: 50%;
+            background: #444; color: white;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: 1.6rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+        }
+        .fab:hover { background: #b8541a; }
+    </style>
+</head>
+<body>
+    <h1>Menú Panel Empleado</h1>
+    <div class="lista">
+        <div th:each="item : ${items}"
+             class="item"
+             th:classappend="${item.grupo} ? 'grupo' : 'opcion'"
+             th:style="${item.estiloIndent}">
+
+            <span th:if="${item.grupo}" th:text="${item.nombre}"></span>
+
+            <a th:if="${!item.grupo and item.opcion == 1}" th:href="@{/panel/agregar}" th:text="${item.nombre}"></a>
+            <a th:if="${!item.grupo and item.opcion == 2}" th:href="@{/panel/stock}" th:text="${item.nombre}"></a>
+            <a th:if="${!item.grupo and item.opcion == 3}" th:href="@{/panel/venta}" th:text="${item.nombre}"></a>
+            <a th:if="${!item.grupo and item.opcion == 4}" th:href="@{/panel/historial-ventas}" th:text="${item.nombre}"></a>
+        </div>
+    </div>
+    <a class="fab" th:href="@{/panel}" title="Volver">›</a>
+</body>
+</html>

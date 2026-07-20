@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ferretería - Inventario</title>
+    <style>
+        :root {
+            --color-50: #F0F0F4;
+            --color-100: #D6D6E1;
+            --color-200: #BCBCCE;
+            --color-300: #A1A1BB;
+            --color-400: #8787A8;
+            --color-500: #6D6D95;
+            --color-600: #59597B;
+            --color-700: #464661;
+            --color-800: #333346;
+            --color-900: #20202C;
+            --color-950: #0D0D12;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--color-50);
+            color: var(--color-900);
+            margin: 0;
+        }
+        .navmenu {
+            background: var(--color-700);
+            display: flex;
+            gap: 0;
+        }
+        .navmenu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.9rem 1.6rem;
+            font-size: 0.9rem;
+        }
+        .navmenu a:hover { background: var(--color-800); }
+
+        .contenido { padding: 2rem; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        h1 { color: var(--color-900); margin: 0; font-size: 1.5rem; }
+        .badge {
+            background: var(--color-600);
+            color: white;
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .btn-logout {
+            background: transparent;
+            color: var(--color-700);
+            border: 1px solid var(--color-700);
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-logout:hover { background: var(--color-700); color: white; }
+        .top-bar { display:flex; align-items:center; gap:0.8rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+        th {
+            background: var(--color-600);
+            color: white;
+            text-align: left;
+            padding: 0.8rem;
+            font-size: 0.85rem;
+        }
+        td {
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid var(--color-100);
+            font-size: 0.9rem;
+            color: var(--color-900);
+        }
+        tr:hover td { background: var(--color-50); }
+
+        .alerta {
+            background: var(--color-50);
+            border: 1px solid var(--color-200);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .alerta strong { color: var(--color-700); }
+        .alerta ul { margin: 0.4rem 0 0 1.2rem; padding: 0; font-size: 0.85rem; color: var(--color-900); }
+    </style>
+</head>
+<body>
+    <nav class="navmenu" th:if="${rol == 'EMPLEADO'}">
+        <a th:each="item : ${menuItems}"
+           th:if="${!item.grupo}"
+           th:href="${item.opcion == 1} ? @{/panel/agregar} : (${item.opcion == 2} ? @{/panel/stock} : (${item.opcion == 3} ? @{/panel/venta} : @{/panel/historial-ventas}))"
+           th:text="${item.nombre}">
+        </a>
+    </nav>
+
+    <div class="contenido">
+        <div class="header">
+            <div class="top-bar">
+                <h1>Inventario</h1>
+                <span class="badge" th:text="${rol}"></span>
+            </div>
+            <a class="btn-logout" th:href="@{/logout}">Cerrar sesión</a>
+        </div>
+
+        <div th:if="${!#lists.isEmpty(alertas)}" class="alerta">
+            <strong>⚠ Alertas de stock bajo:</strong>
+            <ul>
+                <li th:each="a : ${alertas}" th:text="${a}"></li>
+            </ul>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Categoría</th>
+                <th>Disponible</th>
+            </tr>
+            <tr th:each="p : ${inventario}">
+                <td th:text="${p.idProducto}"></td>
+                <td th:text="${p.nombre}"></td>
+                <td th:text="${p.marca}"></td>
+                <td th:text="${p.precio}"></td>
+                <td th:text="${p.stock}"></td>
+                <td th:text="${p.categoria}"></td>
+                <td th:text="${p.disponible} ? 'Sí' : 'No'"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

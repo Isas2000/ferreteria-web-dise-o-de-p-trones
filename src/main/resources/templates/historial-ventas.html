@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Ventas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-50:#F0F0F4; --color-100:#D6D6E1; --color-200:#BCBCCE; --color-300:#A1A1BB;
+            --color-400:#8787A8; --color-500:#6D6D95; --color-600:#59597B; --color-700:#464661;
+            --color-800:#333346; --color-900:#20202C; --color-950:#0D0D12;
+        }
+        body { font-family:'Segoe UI',Arial,sans-serif; background:var(--color-50); color:var(--color-900); margin:0; padding:2rem; }
+        h1 { color:var(--color-900); margin-top:3.5rem; }
+        ul { background:white; border-radius:10px; padding:1rem 1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.06); list-style:none; }
+        li { padding:0.6rem 0; border-bottom:1px solid var(--color-100); font-size:0.9rem; color:var(--color-900); }
+        li:last-child { border-bottom:none; }
+        .fab-volver {
+            position: fixed; top: 2rem; left: 2rem;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: white; border: none;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            text-decoration: none;
+        }
+        .fab-volver i { color: #808080; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <a class="fab-volver" th:href="@{/panel}"><i class="fa-solid fa-angle-left"></i></a>
+    <h1>Historial de Ventas</h1>
+    <ul>
+        <li th:each="v : ${ventas}" th:text="${v}"></li>
+        <li th:if="${#lists.isEmpty(ventas)}">Aún no hay ventas registradas.</li>
+    </ul>
+</body>
+</html>

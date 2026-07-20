@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión como Cliente</title>
+    <style>
+        :root {
+            --color-50:#F0F0F4; --color-100:#D6D6E1; --color-200:#BCBCCE; --color-300:#A1A1BB;
+            --color-400:#8787A8; --color-500:#6D6D95; --color-600:#59597B; --color-700:#464661;
+            --color-800:#333346; --color-900:#20202C; --color-950:#0D0D12;
+        }
+        body { font-family:'Segoe UI',Arial,sans-serif; background:var(--color-50); color:var(--color-900); display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; }
+        .card { background:white; padding:2.5rem; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); width:340px; }
+        h1 { color:var(--color-900); font-size:1.3rem; margin-bottom:0.6rem; text-align:center; }
+        p { color:var(--color-600); font-size:0.85rem; margin-bottom:1.5rem; text-align:center; }
+        label { display:block; margin-bottom:1rem; font-size:0.9rem; color:var(--color-900); }
+        input { width:100%; padding:0.6rem; margin-top:0.3rem; border:1px solid var(--color-200); border-radius:6px; box-sizing:border-box; color:var(--color-900); }
+        .btn-primario { width:100%; padding:0.75rem; background:var(--color-600); color:white; border:none; border-radius:6px; font-size:0.95rem; cursor:pointer; margin-top:0.5rem; }
+        .btn-primario:hover { background:var(--color-700); }
+        .error { background:var(--color-100); color:var(--color-900); padding:0.6rem; border-radius:6px; font-size:0.85rem; margin-bottom:1rem; border:1px solid var(--color-200); }
+        .regresar { display:block; text-align:center; margin-top:1.4rem; color:var(--color-300); font-size:0.85rem; text-decoration:underline; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Bienvenido, Cliente</h1>
+        <p>Ingresa el teléfono con el que te registraste.</p>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <form th:action="@{/login/cliente/buscar}" method="post">
+            <label>Teléfono
+                <input type="text" name="telefono" required>
+            </label>
+            <button type="submit" class="btn-primario">Ingresar</button>
+        </form>
+        <a th:href="@{/login}" class="regresar">Regresar a pantalla general</a>
+    </div>
+</body>
+</html>

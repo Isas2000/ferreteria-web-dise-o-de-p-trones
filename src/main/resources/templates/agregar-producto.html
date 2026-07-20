@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Producto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-50:#F0F0F4; --color-100:#D6D6E1; --color-200:#BCBCCE; --color-300:#A1A1BB;
+            --color-400:#8787A8; --color-500:#6D6D95; --color-600:#59597B; --color-700:#464661;
+            --color-800:#333346; --color-900:#20202C; --color-950:#0D0D12;
+        }
+        body { font-family:'Segoe UI',Arial,sans-serif; background:var(--color-50); color:var(--color-900); display:flex; justify-content:center; align-items:center; min-height:100vh; margin:0; position:relative; }
+        .card { background:white; padding:2.5rem; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); width:360px; }
+        h1 { color:var(--color-900); font-size:1.3rem; margin-bottom:1.5rem; }
+        label { display:block; margin-bottom:0.8rem; font-size:0.9rem; color:var(--color-900); }
+        input { width:100%; padding:0.6rem; margin-top:0.3rem; border:1px solid var(--color-200); border-radius:6px; box-sizing:border-box; color:var(--color-900); }
+        button { width:100%; padding:0.7rem; background:var(--color-600); color:white; border:none; border-radius:6px; font-size:0.95rem; cursor:pointer; margin-top:0.5rem; }
+        button:hover { background:var(--color-700); }
+        .fab-volver {
+            position: fixed; top: 2rem; left: 2rem;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: white; border: none;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            text-decoration: none;
+        }
+        .fab-volver i { color: #808080; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <a class="fab-volver" th:href="@{/panel}"><i class="fa-solid fa-angle-left"></i></a>
+    <div class="card">
+        <h1>Agregar Producto</h1>
+        <form th:action="@{/panel/agregar}" method="post">
+            <label>ID <input type="number" name="id" required></label>
+            <label>Nombre <input type="text" name="nombre" required></label>
+            <label>Marca <input type="text" name="marca" required></label>
+            <label>Precio <input type="number" step="0.01" name="precio" required></label>
+            <label>Stock <input type="number" name="stock" required></label>
+            <label>Categoría
+                <input type="text" name="categoria" list="categorias-list" required placeholder="Elige o escribe una nueva">
+                <datalist id="categorias-list">
+                    <option th:each="cat : ${categorias}" th:value="${cat}"></option>
+                </datalist>
+            </label>
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+</body>
+</html>
