@@ -17,15 +17,18 @@ public class InventarioProxy implements IInventario {
             System.out.println("[Proxy] Acceso denegado. Solo empleados pueden agregar productos.");
         }
     }
+
     @Override
-    public void actualizarStock(int idProducto, int cantidad) {
+    public boolean actualizarStock(int idProducto, int cantidad) {
         if (rolUsuario.equals("EMPLEADO")) {
             System.out.println("[Proxy] Acceso autorizado para actualizar stock.");
-            inventarioReal.actualizarStock(idProducto, cantidad);
+            return inventarioReal.actualizarStock(idProducto, cantidad);
         } else {
             System.out.println("[Proxy] Acceso denegado. Solo empleados pueden actualizar stock.");
+            return false;
         }
     }
+
     @Override
     public void mostrarInventario() {
         System.out.println("[Proxy] Acceso permitido para ver inventario.");

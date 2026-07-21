@@ -9,9 +9,15 @@ public class ActualizarStockComando implements Comando {
         this.idProducto = idProducto;
         this.cantidad = cantidad;
     }
+
     @Override
     public void ejecutar() {
         System.out.println("[Command] Ejecutando: ActualizarStock");
-        inventario.actualizarStock(idProducto, cantidad);
+        boolean ok = inventario.actualizarStock(idProducto, cantidad);
+        if (ok) {
+            System.out.println("[Command] Stock actualizado correctamente.");
+        } else {
+            System.out.println("[Command] No se pudo actualizar el stock (denegado o producto inexistente).");
+        }
     }
 }

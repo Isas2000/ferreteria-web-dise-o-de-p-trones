@@ -1,5 +1,6 @@
 
 package ferreteria.demo.Facade;
+import ferreteria.demo.Proxy.InventarioProxy;
 
 import ferreteria.demo.AbiertoCerrado.Cliente;
 
@@ -9,7 +10,6 @@ import ferreteria.demo.FactoryMethod.ClienteFactory;
 import ferreteria.demo.FactoryMethod.EmpleadoFactory;
 import ferreteria.demo.AbiertoCerrado.TipoPersona;
 
-import ferreteria.demo.Composite.ComponenteMenu;
 import ferreteria.demo.Composite.MenuCompuesto;
 import ferreteria.demo.Composite.MenuHoja;
 import ferreteria.demo.Composite.MenuItemView;
@@ -31,16 +31,7 @@ import ferreteria.demo.InversionDependencias.GestorProductos;
 import ferreteria.demo.InversionDependencias.ListaProductos;
 import ferreteria.demo.ResponsabilidadUnica.Productos;
 
-/**
- * PATRÓN FACADE — FerreteriaSistemaFacade
- *
- * Subsistemas que coordina:
- *  - SistemaAutenticacion  (Singleton)
- *  - InicializadorInventario
- *  - Inventario             (Singleton)
- *  - ProductoBuilder + DirectorProducto  (Builder)
- *  - GestorProductos + ListaProductos    (DIP)
- */
+
 public class SistemaFacade {
 
     private final SistemaAutenticacion auth;
@@ -56,7 +47,6 @@ public class SistemaFacade {
         this.invoker = new InvokerComandos();
     }
 
-    // ── AUTENTICACIÓN ──────────────────────────────────────────────────
     public void iniciarSesion(int opcion) {
         System.out.println("\n[Facade] Iniciando sesión...");
         auth.procesarIngreso(opcion);
@@ -73,7 +63,6 @@ public class SistemaFacade {
         auth.cerrarSesion();
     }
 
-    // ── INVENTARIO ────────────────────────────────────────────────────
     public void verInventario() {
         inventario.mostrarInventario();
     }
@@ -100,17 +89,16 @@ public class SistemaFacade {
         inventario.actualizarStock(id, cantidad);
     }
 
-    public void registrarVentaComando(int idProducto, int cantidad, String nombreCliente) {
-    Comando cmd = new RegistrarVentaComando(auth.getProxy(), idProducto, cantidad, nombreCliente);
+    public void registrarVentaComando(InventarioProxy proxy, int idProducto, int cantidad, String nombreCliente, String dni) {
+    RegistrarVentaComando cmd = new RegistrarVentaComando(proxy, idProducto, cantidad, nombreCliente, dni);
     invoker.ejecutar(cmd);
     }
 
-    public void actualizarStockComando(int idProducto, int cantidad) {
-    Comando cmd = new ActualizarStockComando(auth.getProxy(), idProducto, cantidad);
+    public void actualizarStockComando(InventarioProxy proxy, int idProducto, int cantidad) {
+    Comando cmd = new ActualizarStockComando(proxy, idProducto, cantidad);
     invoker.ejecutar(cmd);
     }
 
-    // ── PROMOCIONES ───────────────────────────────────────────────────
     public void mostrarPromociones() {
         System.out.println("\n── Promociones del día ─────────────────");
         System.out.println("  - 10% de descuento en herramientas eléctricas");
@@ -118,22 +106,20 @@ public class SistemaFacade {
         System.out.println("  - Envío gratis en compras mayores a S/.150");
     }
     
-    // ── MÉTODOS WEB (sin Scanner, sin System.exit) ──────────────────────
-    public boolean loginEmpleadoWeb(String usuario, String password) {
-        return auth.loginEmpleadoWeb(usuario, password);
+    public InventarioProxy loginEmpleadoWeb(String usuario, String password) {
+    return auth.loginEmpleadoWeb(usuario, password);
     }
 
-    public void loginInvitadoWeb() {
-        auth.iniciarComoInvitadoWeb();
+    public InventarioProxy loginInvitadoWeb() {
+    return auth.iniciarComoInvitadoWeb();
     }
 
-    public int getIntentosRestantes() {
-        return auth.getIntentosRestantes();
-    }
+
+   
     
 
-    public java.util.List<Productos> obtenerInventario() {
-    return auth.getProxy().obtenerProductos();
+    public java.util.List<Productos> obtenerInventario(InventarioProxy proxy) {
+    return proxy.obtenerProductos();
     }
 
     public java.util.List<String> obtenerHistorialVentas() {
@@ -143,10 +129,10 @@ public class SistemaFacade {
             .toList();
     }
 
-public void agregarProductoComando(int id, String nombre, String marca,
+public void agregarProductoComando(InventarioProxy proxy, int id, String nombre, String marca,
                                     double precio, int stock, String categoria) {
     Productos nuevo = director.construirProductoCompleto(id, nombre, marca, precio, stock, categoria);
-    Comando cmd = new AgregarProductoComando(auth.getProxy(), nuevo);
+    Comando cmd = new AgregarProductoComando(proxy, nuevo);
     invoker.ejecutar(cmd);
 }
 

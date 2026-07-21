@@ -21,6 +21,7 @@ public class SistemaAutenticacion {
         return instancia;
     }
 
+
     public void procesarIngreso(int opcion) {
         if (opcion == 1) {
             loginEmpleado();
@@ -63,10 +64,6 @@ public class SistemaAutenticacion {
         }
     }
 
-    private boolean validarCredenciales(String username, String password) {
-        return username.equals("admin") && password.equals("1234");
-    }
-
     private void iniciarComoInvitado() {
         proxy = new InventarioProxy("CLIENTE");
         System.out.println("[Proxy] Proxy de inventario creado con rol CLIENTE.");
@@ -81,23 +78,20 @@ public class SistemaAutenticacion {
         System.out.println("Sesión cerrada.");
     }
 
-// NUEVO — para uso desde el Controller web
-public boolean loginEmpleadoWeb(String usuario, String password) {
-    if (validarCredenciales(usuario, password)) {
-        contadorIntentos = 0;
-        proxy = new InventarioProxy("EMPLEADO");
-        return true;
-    } else {
-        contadorIntentos++;
-        return false;
+
+    private boolean validarCredenciales(String username, String password) {
+        return username.equals("admin") && password.equals("1234");
     }
-}
 
-public int getIntentosRestantes() {
-    return 3 - contadorIntentos;
-}
+   
+    public InventarioProxy loginEmpleadoWeb(String usuario, String password) {
+        if (validarCredenciales(usuario, password)) {
+            return new InventarioProxy("EMPLEADO");
+        }
+        return null;
+    }
 
-public void iniciarComoInvitadoWeb() {
-    proxy = new InventarioProxy("CLIENTE");
-}
+    public InventarioProxy iniciarComoInvitadoWeb() {
+        return new InventarioProxy("CLIENTE");
+    }
 }

@@ -11,10 +11,19 @@ public class InventarioReal implements IInventario {
     public void agregarProducto(Productos p) {
         inventario.agregarProducto(p);
     }
+
     @Override
-    public void actualizarStock(int idProducto, int cantidad) {
+    public boolean actualizarStock(int idProducto, int cantidad) {
+        boolean existe = inventario.getProductos().stream()
+                .anyMatch(p -> p.getIdProducto() == idProducto);
+        if (!existe) {
+            System.out.println("[InventarioReal] Producto ID " + idProducto + " no encontrado.");
+            return false;
+        }
         inventario.actualizarStock(idProducto, cantidad);
+        return true;
     }
+
     @Override
     public void mostrarInventario() {
         inventario.mostrarInventario();

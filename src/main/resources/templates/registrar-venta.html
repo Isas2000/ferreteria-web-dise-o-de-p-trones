@@ -32,8 +32,14 @@
     <a class="fab-volver" th:href="@{/panel}"><i class="fa-solid fa-angle-left"></i></a>
     <div class="card">
         <h1>Registrar Venta</h1>
+
+        <p th:if="${param.error != null and param.error[0] == 'producto'}" style="color:red">Producto no encontrado.</p>
+        <p th:if="${param.error != null and param.error[0] == 'stock'}" style="color:red">Cantidad inválida o insuficiente.</p>
+        <p th:if="${param.error != null and param.error[0] == 'dni'}" style="color:red">DNI inválido, debe tener 8 dígitos.</p>
+
         <form th:action="@{/panel/venta}" method="post">
             <label>Nombre del cliente <input type="text" name="nombreCliente" required></label>
+            <label>DNI <input type="text" name="dni" maxlength="8" pattern="[0-9]{8}" required></label>
             <label>Producto
                 <select name="idProducto" required>
                     <option th:each="p : ${inventario}"
@@ -47,4 +53,5 @@
         </form>
     </div>
 </body>
+
 </html>
