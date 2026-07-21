@@ -119,4 +119,15 @@ public class LoginController {
         return "redirect:/panel";
     }
 
+    @GetMapping("/registro/cliente")
+    public String mostrarRegistroCliente() {
+        return "registro-cliente";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+       session.invalidate();
+       return "redirect:/login";
+    }
+
 }
